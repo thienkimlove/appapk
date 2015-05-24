@@ -4,12 +4,13 @@
 namespace App\Crawlers;
 
 
-class GooglePlayAPI {
+class GooglePlayApi {
 
-    private $pythonAPILocation;
+    private $pythonAPILocation, $tmpFile;
 
-    public function __construct($pythonAPILocation) {
+    public function __construct($pythonAPILocation, $tmpFile) {
         $this->pythonAPILocation = $pythonAPILocation;
+        $this->tmpFile = $tmpFile;
     }
 
 
@@ -47,6 +48,6 @@ class GooglePlayAPI {
 
         $command .= ".py ";
 
-        return "python ". $this->pythonAPILocation . $command . $params . $redirect . " 2> /dev/null";
+        return "python ". $this->pythonAPILocation .'/'. $command . $params . $redirect . " 2> /dev/null";
     }
 }

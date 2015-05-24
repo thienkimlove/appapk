@@ -277,12 +277,12 @@ class MainCrawler {
                 return url($apkFile);
             }
         }*/
-        $api = new GooglePlayAPI(base_path('googleplay-api'));
+        $api = new GooglePlayApi(base_path('googleplay-api'), public_path('tempApk/show.txt'));
         // Download an app
-        $pathToAPKFile = $api->download(public_path('tempApk'), $package, md5(time()));
+        $pathToAPKFile = $api->download(public_path('tempApk'), $package, time());
 
-        if ($pathToAPKFile) {
-            return url('tempApk/'. $pathToAPKFile);
+        if (file_exists($pathToAPKFile)) {
+            return url('tempApk/'. basename($pathToAPKFile));
         }
         return;
     }

@@ -32,7 +32,7 @@ app.controller('DownloadController', function($scope, $http){
         $http.get(Config.url + '/downloadLink/' + id).then(function(response){
            $scope.loading = false;
            $scope.link = response.data.link;
-           if ($scope.link.indexOf('play.google.com')) {
+           if ($scope.link.indexOf('play.google.com') != -1) {
                $scope.google = true;
            }
         });
