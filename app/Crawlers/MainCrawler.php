@@ -12,7 +12,6 @@ namespace App\Crawlers;
 use App\Capture;
 use App\Game;
 use App\Http\Requests;
-use ErrorException;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\TransferException;
 use Illuminate\Support\Facades\DB;
@@ -270,13 +269,20 @@ class MainCrawler {
      */
     protected function simulator($package)
     {
-        if ($filename = @file_get_contents(env('DOWNLOAD_HOST').'?package='.$package)) {
+        /*if ($filename = @file_get_contents(env('DOWNLOAD_HOST').'?package='.$package)) {
             $apkFile = '/tempApk/'.md5(time()).'.apk';
             if (file_exists($filename)) {
                 copy($filename, public_path().$apkFile);
                 unlink($filename);
                 return url($apkFile);
             }
+        }*/
+        $api = new GooglePlayAPI(base_path('googleplay-api'));
+        // Download an app
+        $pathToAPKFile = $api->download(public_path('tempApk'), $package, md5(time()));
+
+        if ($pathToAPKFile) {
+            return url('tempApk/'. $pathToAPKFile);
         }
         return;
     }
