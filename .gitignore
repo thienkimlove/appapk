@@ -1,0 +1,7 @@
+/node_modules
+.env
+.idea
+/public/images/*
+!/public/images/show.txt
+/public/tempApk/*
+!/public/tempApk/show.txt

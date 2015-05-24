@@ -1,0 +1,14 @@
+User-agent: *
+Disallow: /cralwer/
+Disallow: /cralwer
+Disallow: /import
+Disallow: /import/
+Disallow: /store-sitemap/
+Disallow: /store-sitemap
+Disallow: /suggestion/
+Disallow: /suggestion
+Disallow: /auth/
+Disallow: /auth
+
+Sitemap: http://appforandroidphone.com/sitemap.xml
+
