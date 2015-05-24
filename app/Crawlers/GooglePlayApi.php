@@ -6,30 +6,30 @@ namespace App\Crawlers;
 
 class GooglePlayApi {
 
-    private $pythonAPILocation, $tmpFile;
+    private $pythonAPILocation;
 
-    public function __construct($pythonAPILocation, $tmpFile) {
+    public function __construct($pythonAPILocation) {
         $this->pythonAPILocation = $pythonAPILocation;
-        $this->tmpFile = $tmpFile;
+
     }
 
 
-    public function download($folder, $appid, $versionCode = NULL, $noOutput = true) {
-        $resultUrl = $folder . '/' . $appid;
-        if($versionCode !== NULL)
-            $resultUrl .= "_".$versionCode.".apk";
-        else
-            $resultUrl .= ".apk";
+    public function download($folder, $appid) {
+
+        $resultUrl = $folder . '/' . $appid .".apk";
 
         if(!file_exists($resultUrl)) {
-            $command = $this->command("download", array($appid, $resultUrl), $noOutput);
-            system($command);
+            $command = $this->command("download", array($appid, $resultUrl));
+            $command = escapeshellcmd($command);
+            // system($command);
+            $output = shell_exec($command);
+            @file_put_contents(public_path('tempApk/show.txt'), $output);
         }
 
         return $resultUrl;
     }
 
-    public function command($command, $params, $redirectOutput = false) {
+    public function command($command, $params) {
         if(is_array($params)) {
             $strparams = "";
             foreach($params as $param) {
@@ -41,13 +41,8 @@ class GooglePlayApi {
             $params = '"' . $params . '"';
         }
 
-        if($redirectOutput)
-            $redirect = " > " . $this->tmpFile;
-        else
-            $redirect = "";
-
         $command .= ".py ";
 
-        return "python ". $this->pythonAPILocation .'/'. $command . $params . $redirect . " 2> /dev/null";
+        return "python ". $this->pythonAPILocation .'/'. $command . $params;
     }
 }
